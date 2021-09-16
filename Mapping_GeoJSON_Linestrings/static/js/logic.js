@@ -35,11 +35,26 @@ L.control.layers(baseMaps).addTo(map);
 streets.addTo(map);
   */
 
-let airportData = "https://github.com/linearcoffeecup/Mapping_Earthquakes/blob/Mapping_GeoJSON_Points/majorAirports.json";
+let torontoData = "https://github.com/linearcoffeecup/Mapping_Earthquakes/blob/Mapping_GeoJSON_Linestrings/Mapping_GeoJSON_Linestrings/torontoRoutes.json";
+
+// Create a style for the lines.
+let myStyle = {
+  color: "#ffffa1",
+  weight: 2
+}
 
 // Grabbing our GeoJSON data.
-d3.json(airportData).then(function(data) {
+d3.json(torontotData).then(function(data) {
   console.log(data);
 // Creating a GeoJSON layer with the retrieved data.
-L.geoJson(data).addTo(map);
+L.geoJson(data,
+  {
+    style : myStyle,
+    onEachFeatue: function(feature, layer) {
+      console.log(layer)
+      layer.bindPopup("<h3>Airline:" + feature.properties.airline + "</h3><br><h3>Destinations:"
+      + feature.properties.dst +"</h3>");
+    }
+  }
+  ).addTo(map);
 });
